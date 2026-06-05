@@ -66,10 +66,21 @@ def reservar(agenda):
         motivo = input("Insira o motivo da reserva: ")
         reserva = nome + " - " + motivo
         agenda[dia][hora] = reserva
+        print("\nReserva feita com sucesso!")
     else:
         confirma = valida_confirmacao("\nDeseja escolher outra data? (S/N): ")
         if confirma == "s":
             reservar(agenda)
+
+def cancelar(agenda):
+    dia, hora, disp = consultar(agenda)
+    if disp ==  "RESERVADO":
+        confirma = valida_confirmacao("\nDeseja cancelar essa reserva? (S/N): ")
+        if confirma == "s":
+            agenda[dia][hora] = "LIVRE"
+            print("\nReserva cancelada com sucesso!")
+    else:
+        print("Não há o que cancelar!")
 
 def mostar_menu():
     while True:
@@ -86,7 +97,7 @@ def mostar_menu():
         elif n == 3:
             reservar(agenda)
         elif n == 4:
-            print()
+            cancelar(agenda)
         elif n == 5:
             print()
         else:
