@@ -1,6 +1,7 @@
 dias = ["segunda", "terça", "quarta", "quinta", "sexta"]
-horarios = ['8', '9', '10', '11', '12', '13', '14', '15']
+horarios = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00']
 agenda = [["LIVRE" for coluna in range(8)] for linha in range(5)]
+historico = []
 
 def valida_opcao(max, texto):
     opcao = input(texto)
@@ -54,7 +55,7 @@ def consultar(agenda):
         print(f"\nA sala foi RESERVADA!\nResponsavel: {agenda[dia][hora].split("-")[0]}\nMotivo: {agenda[dia][hora].split("-")[1].strip()}")
         return dia, hora, "RESERVADO"
 
-def reservar(agenda):
+def reservar(agenda, historico):
     dia, hora, disp = consultar(agenda)
     if disp == "LIVRE":
         while True:
@@ -67,20 +68,38 @@ def reservar(agenda):
         reserva = nome + " - " + motivo
         agenda[dia][hora] = reserva
         print("\nReserva feita com sucesso!")
+        historico.append(f"Reserva criada: {dias[dia]}, {horarios[hora]}, {reserva}")
     else:
         confirma = valida_confirmacao("\nDeseja escolher outra data? (S/N): ")
         if confirma == "s":
             reservar(agenda)
 
-def cancelar(agenda):
+def cancelar(agenda, historico):
     dia, hora, disp = consultar(agenda)
     if disp ==  "RESERVADO":
         confirma = valida_confirmacao("\nDeseja cancelar essa reserva? (S/N): ")
         if confirma == "s":
+            historico.append(f"Reserva cancelada: {dias[dia]}, {horarios[hora]}, {agenda[dia][hora]}")
             agenda[dia][hora] = "LIVRE"
             print("\nReserva cancelada com sucesso!")
     else:
         print("Não há o que cancelar!")
+
+def mostrar_historico(historico):
+    if not historico:
+        print("\nhistorico vazio!")
+        return
+    while True:
+        n = valida_opcao(len(historico), f"\nInsira o numero de operações a serem exibidas (1-{len(historico)}): ")
+        if not n:
+            continue
+        else:
+            ultimos = historico[-n:]
+            print("\n ----------------------------------")
+            for i in ultimos:
+                print(i)
+            print(" --------------------------------------")
+            break
 
 def mostar_menu():
     while True:
@@ -95,11 +114,11 @@ def mostar_menu():
         elif n == 2:
             consultar(agenda)
         elif n == 3:
-            reservar(agenda)
+            reservar(agenda, historico)
         elif n == 4:
-            cancelar(agenda)
+            cancelar(agenda, historico)
         elif n == 5:
-            print()
+            mostrar_historico(historico)
         else:
             break
 
