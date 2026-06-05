@@ -37,11 +37,31 @@ def consultar(agenda):
             continue
         else:
             break
-    if agenda[dia-1][hora-1] == "LIVRE":
-        print("\nA sala esta LIVRE")
+    dia = dia - 1
+    hora = hora - 1
+    if agenda[dia][hora] == "LIVRE":
+        print("\nA sala esta LIVRE!")
+        return dia, hora, "LIVRE"
     else:
-        print(f"\nA sala foi RESERVADA por: {agenda[dia-1][hora-1]}")
-    return (dia-1,hora-1)
+        print(f"\nA sala foi RESERVADA!\nResponsavel: {agenda[dia][hora].split("-")[0]}\nMotivo: {agenda[dia][hora].split("-")[1].strip()}")
+        return dia, hora, "RESERVADO"
+
+def reservar(agenda):
+    dia, hora, disp = consultar(agenda)
+    if disp == "LIVRE":
+        while True:
+            nome = input("\nInsira o nome do responsavel (max 9 caracteres): ")
+            if len(nome) > 9 or not nome:
+                print("Nome invalido! maximo 9 caracteres e minimo 1")
+            else:
+                break
+        motivo = input("Insira o motivo da reserva: ")
+        reserva = nome + " - " + motivo
+        agenda[dia][hora] = reserva
+    else:
+        confirma = input("\nDeseja escolher outra data? (S/N): ")
+        if confirma.lower() == "s":
+            reservar(agenda)
 
 def mostar_menu():
     while True:
@@ -56,7 +76,7 @@ def mostar_menu():
         elif n == 2:
             consultar(agenda)
         elif n == 3:
-            print()
+            reservar(agenda)
         elif n == 4:
             print()
         elif n == 5:
