@@ -148,6 +148,15 @@ def buscar_nome(agenda):
     if c == 0:
         print("Nenhuma reserva com esse nome")
 
+def resetar(agenda, historico):
+    confirma = valida_confirmacao("\nTem certeza que quer resetar a agenda? (S/N): ")
+    if confirma == "s":
+        for dia in range(len(agenda)):
+            for hora in range(len(agenda[dia])):
+                agenda[dia][hora] = "LIVRE"
+        print("\nAgenda resetada com sucesso!")
+        historico.append("Agenda resetada")
+
 def relatorios(agenda, historico):
     while True:
         print("\n -------- Relatórios -------- ")
@@ -172,9 +181,9 @@ def relatorios(agenda, historico):
 def mostar_menu():
     while True:
         print("\n ----------- Menu ----------- ")
-        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Sair")
+        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Resetar agenda\n7. Sair")
         print(" ----------------------- ")
-        n = valida_opcao(6, "Escolha uma opção (1-6): ")
+        n = valida_opcao(7, "Escolha uma opção (1-7): ")
         if not n:
             continue
         elif n == 1:
@@ -187,6 +196,8 @@ def mostar_menu():
             cancelar(agenda, historico)
         elif n == 5:
             relatorios(agenda, historico)
+        elif n == 6:
+            resetar(agenda, historico)
         else:
             break
 
