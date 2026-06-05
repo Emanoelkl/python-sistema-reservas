@@ -9,6 +9,14 @@ def valida_opcao(max, texto):
         return False
     return int(opcao)
 
+def valida_confirmacao(texto):
+    while True:
+        opcao = input(texto).lower()
+        if opcao not in ["s","n"]:
+            print("\nResposta invalida! digite sim ou nao (S/N)")
+        else:
+            return opcao
+
 def mostrar_agenda(agenda):
     print(f"\n             08:00     09:00     10:00     11:00     12:00     13:00     14:00     15:00")
     for dia in range(len(agenda)):
@@ -59,8 +67,8 @@ def reservar(agenda):
         reserva = nome + " - " + motivo
         agenda[dia][hora] = reserva
     else:
-        confirma = input("\nDeseja escolher outra data? (S/N): ")
-        if confirma.lower() == "s":
+        confirma = valida_confirmacao("\nDeseja escolher outra data? (S/N): ")
+        if confirma == "s":
             reservar(agenda)
 
 def mostar_menu():
