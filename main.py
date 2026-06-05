@@ -121,7 +121,10 @@ def maior_dia(agenda):
         if reservado > maior[0]:
             maior[0] = reservado
             maior[1] = dia
-    print(f"\nO dia com mais reservas é {dias[maior[1]]}")
+    if maior[0] > 0:
+        print(f"\nO dia com mais reservas é {dias[maior[1]]}")
+    else:
+        print("\nNenhuma reserva encontrada")
 
 def maior_hora(agenda):
     maior = [0, 0]
@@ -133,7 +136,10 @@ def maior_hora(agenda):
         if reservado > maior[0]:
             maior[0] = reservado
             maior[1] = hora
-    print(f"\nA hora com mais reservas é {horarios[maior[1]]}")
+    if maior[0] > 0:
+        print(f"\nA hora com mais reservas é {horarios[maior[1]]}")
+    else:
+        print("\nNenhuma reserva encontrada")
     
 def buscar_nome(agenda):
     busca = input("\nInsira o nome para busca: ")
