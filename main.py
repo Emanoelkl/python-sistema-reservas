@@ -72,7 +72,7 @@ def reservar(agenda, historico):
     else:
         confirma = valida_confirmacao("\nDeseja escolher outra data? (S/N): ")
         if confirma == "s":
-            reservar(agenda)
+            reservar(agenda, historico)
 
 def cancelar(agenda, historico):
     dia, hora, disp = consultar(agenda)
@@ -100,10 +100,78 @@ def mostrar_historico(historico):
                 print(i)
             print(" --------------------------------------")
             break
+def total(agenda):
+    livre = 0
+    reservado = 0
+    for dia in range(len(agenda)):
+        for hora in range(len(agenda[dia])):
+            if agenda[dia][hora] == "LIVRE":
+                livre += 1
+            else:
+                reservado += 1
+    print(f"\nEssa semana {reservado} horarios ja estão reservados e {livre} estão livres")
+
+def maior_dia(agenda):
+    maior = [0, 0]
+    for dia in range(len(agenda)):
+        reservado = 0
+        for hora in range(len(agenda[dia])):
+            if agenda[dia][hora] != "LIVRE":
+                reservado += 1
+        if reservado > maior[0]:
+            maior[0] = reservado
+            maior[1] = dia
+    print(f"\nO dia com mais reservas é {dias[maior[1]]}")
+
+def maior_hora(agenda):
+    maior = [0, 0]
+    for hora in range(len(agenda[0])):
+        reservado = 0
+        for dia in range(len(agenda)):
+            if agenda[dia][hora] != "LIVRE":
+                reservado += 1
+        if reservado > maior[0]:
+            maior[0] = reservado
+            maior[1] = hora
+    print(f"\nA hora com mais reservas é {horarios[maior[1]]}")
+    
+def buscar_nome(agenda):
+    busca = input("\nInsira o nome para busca: ")
+    print()
+    c = 0
+    for dia in range(len(agenda)):
+        for hora in range(len(agenda[dia])):
+            nome = agenda[dia][hora].split("-")[0].strip()
+            if nome == busca:
+                c += 1
+                print(f"{nome} tem reserva na {dias[dia]} as {horarios[hora]}")
+    if c == 0:
+        print("Nenhuma reserva com esse nome")
+
+def relatorios(agenda, historico):
+    while True:
+        print("\n -------- Relatórios -------- ")
+        print("1. Total de horários livres e reservados na semana\n2. Dia com mais reservas\n3. Horário mais reservado\n4. Buscar reservas por nome\n5. Exibir Histórico\n6. Voltar ao Menu")
+        print(" ----------------------- ")
+        n = valida_opcao(6, "Escolha uma opção (1-6): ")
+        if not n:
+            continue
+        elif n == 1:
+            total(agenda)
+        elif n == 2:
+            maior_dia(agenda)
+        elif n == 3:
+            maior_hora(agenda)
+        elif n == 4:
+            buscar_nome(agenda)
+        elif n == 5:
+            mostrar_historico(historico)
+        else:
+            break
 
 def mostar_menu():
     while True:
-        print("\n ---------------------------- ")
+        print("\n ----------- Menu ----------- ")
         print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Sair")
         print(" ----------------------- ")
         n = valida_opcao(6, "Escolha uma opção (1-6): ")
@@ -118,7 +186,7 @@ def mostar_menu():
         elif n == 4:
             cancelar(agenda, historico)
         elif n == 5:
-            mostrar_historico(historico)
+            relatorios(agenda, historico)
         else:
             break
 
