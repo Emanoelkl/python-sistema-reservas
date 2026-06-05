@@ -157,6 +157,16 @@ def resetar(agenda, historico):
         print("\nAgenda resetada com sucesso!")
         historico.append("Agenda resetada")
 
+def exportar(agenda):
+    with open("agenda.txt", "w", encoding='utf-8') as arquivo:
+        arquivo.write(f"             08:00     09:00     10:00     11:00     12:00     13:00     14:00     15:00\n")
+        for dia in range(len(agenda)):
+            arquivo.write(f"{dias[dia]:>8}")
+            for hora in range(len(agenda[dia])):
+                nome = agenda[dia][hora].split("-")[0].strip()
+                arquivo.write(f"{nome:>10}")
+            arquivo.write("\n")
+
 def relatorios(agenda, historico):
     while True:
         print("\n -------- Relatórios -------- ")
@@ -181,9 +191,9 @@ def relatorios(agenda, historico):
 def mostar_menu():
     while True:
         print("\n ----------- Menu ----------- ")
-        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Resetar agenda\n7. Sair")
+        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Resetar agenda\n7. Exportar agenda\n8. Sair")
         print(" ----------------------- ")
-        n = valida_opcao(7, "Escolha uma opção (1-7): ")
+        n = valida_opcao(8, "Escolha uma opção (1-8): ")
         if not n:
             continue
         elif n == 1:
@@ -198,6 +208,8 @@ def mostar_menu():
             relatorios(agenda, historico)
         elif n == 6:
             resetar(agenda, historico)
+        elif n == 7:
+            exportar(agenda)
         else:
             break
 
