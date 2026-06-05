@@ -9,5 +9,25 @@ def mostrar_agenda(agenda):
         for hora in range(len(agenda[dia])):
             print(f"{agenda[dia][hora]:>9}", end=" ")
         print()
+    input("\n                                  Aperte ENTER para voltar")
 
-mostrar_agenda(agenda)
+def mostar_menu():
+    while True:
+        print("\n ---------------------------- ")
+        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Sair")
+        print(" ----------------------- ")
+        n = int(input("Escolha uma opção: "))
+        if n == 1:
+            mostrar_agenda(agenda)
+        elif n == 2:
+            print()
+        elif n == 3:
+            print()
+        elif n == 4:
+            print()
+        elif n == 5:
+            print()
+        else:
+            break
+
+mostar_menu()
