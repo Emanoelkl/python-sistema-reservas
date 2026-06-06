@@ -74,6 +74,49 @@ def reservar(agenda, historico):
         if confirma == "s":
             reservar(agenda, historico)
 
+def reservar_bloco(agenda, historico):
+    while True:
+        dia = input("\nInforme o dia para reservar o bloco (segunda,terça,...): ")
+        if dia not in dias:
+            print("\nResposta invalida! verifique se foi digitado corretamente")
+            continue
+        break
+    while True:
+        bloco = input("\nInsira o bloco de horarios (ex: 09:00 - 12:00): ")
+        if "-" not in bloco:
+            print("\nResposta invalida! Inclua o traço como no exemplo (ex: 12:00 - 13:00)")
+            continue
+        hora1, hora2 = bloco.split("-", 1)
+        hora1, hora2 = hora1.strip(), hora2.strip()
+        if hora1 not in horarios or hora2 not in horarios:
+            print("\nResposta invalida! Digite a hora como no exemplo (ex: 12:00 - 13:00)")
+            continue
+        inicio = horarios.index(hora1)
+        fim = horarios.index(hora2)
+        if inicio > fim:
+            print("\nResposta invalida! Digite a hora da menor para maior como no exemplo (ex: 12:00 - 13:00)")
+            continue
+        break
+    i = dias.index(dia)
+    for j in range(inicio, fim + 1):
+        if agenda[i][j] != "LIVRE":
+            print("\nFalha ao reservar horarios! Um dos Horarios ja foi reservado")
+            return
+    print("\nHorarios Disponiveis!")
+    while True:
+        nome = input("\nInsira o nome do responsavel (max 9 caracteres): ")
+        if len(nome) > 9 or not nome:
+            print("\nNome invalido! maximo 9 caracteres e minimo 1")
+        else:
+            break
+    motivo = input("Insira o motivo da reserva: ")
+    reserva = nome + " - " + motivo
+        
+    for j in range(inicio, fim + 1):
+        agenda[i][j] = reserva
+        historico.append(f"Reserva criada: {dias[i]}, {horarios[j]}, {reserva}")
+    print("\nReservas feitas com sucesso!")
+
 def cancelar(agenda, historico):
     dia, hora, disp = consultar(agenda)
     if disp ==  "RESERVADO":
@@ -197,9 +240,10 @@ def relatorios(agenda, historico):
 def mostar_menu():
     while True:
         print("\n ----------- Menu ----------- ")
-        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva\n4. Cancelar reserva\n5. Relatórios\n6. Resetar agenda\n7. Exportar agenda\n8. Sair")
+        print("1. Mostrar agenda completa\n2. Consultar disponibilidade\n3. Fazer reserva unica\n4. Fazer reserva em bloco" \
+        "\n5. Cancelar reserva\n6. Relatórios\n7. Resetar agenda\n8. Exportar agenda\n9. Sair")
         print(" ----------------------- ")
-        n = valida_opcao(8, "Escolha uma opção (1-8): ")
+        n = valida_opcao(9, "Escolha uma opção (1-9): ")
         if not n:
             continue
         elif n == 1:
@@ -209,12 +253,14 @@ def mostar_menu():
         elif n == 3:
             reservar(agenda, historico)
         elif n == 4:
-            cancelar(agenda, historico)
+            reservar_bloco(agenda, historico)
         elif n == 5:
-            relatorios(agenda, historico)
+            cancelar(agenda, historico)
         elif n == 6:
-            resetar(agenda, historico)
+            relatorios(agenda, historico)
         elif n == 7:
+            resetar(agenda, historico)
+        elif n == 8:
             exportar(agenda)
         else:
             break
